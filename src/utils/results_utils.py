@@ -77,5 +77,4 @@ def print_evaluation_summary(eer: float, scores_map: Dict[str, float]):
     print("="*50)
     print(f"  Equal Error Rate (EER): {eer:.4f}%")
     print(f"  Number of samples: {len(scores_map)}")
-    print(f"  Score range: {min(scores_map.values()):.4f} to {max(scores_map.values()):.4f}")
     print("="*50 + "\n")

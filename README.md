@@ -37,11 +37,11 @@ model:
 ### 1. Environment Setup
 ```bash
 # Clone the repository
-git clone <repository-url>
-cd template
+git clone https://github.com/Melodiz/LightCNN_ASVspoof2019.git
+cd cd LightCNN_ASVspoof2019/
 
 # Create virtual environment
-python -m venv env
+python3 -m venv env
 source env/bin/activate  # On Windows: env\Scripts\activate
 
 # Install dependencies
@@ -167,10 +167,10 @@ The trained model checkpoint (122MB) is not included in this repository to keep 
 3. Find the `best_model.pth` file in the `checkpoints/` folder
 4. Click the download button to save the file
 5. Place the downloaded file in the `saved/` directory:
-   ```bash
-   mkdir -p saved
-   mv best_model.pth saved/
-   ```
+    ```bash
+    mkdir -p saved
+    mv best_model.pth saved/
+    ```
 
 #### Method 2: Download via Comet.ml API
 ```bash
