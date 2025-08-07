@@ -1,0 +1,19 @@
+# ASVspoof dataset configuration
+
+defaults:
+  - _self_
+
+# Training dataset
+train:
+  _target_: src.datasets.asvspoof_dataset.ASVspoofTrainDataset
+  list_IDs: ${datasets.train.list_IDs}
+  labels: ${datasets.train.labels}
+  base_dir: ${datasets.train.base_dir}
+  config: ${datasets.train.config}
+
+# Evaluation dataset  
+eval:
+  _target_: src.datasets.asvspoof_dataset.ASVspoofEvalDataset
+  list_IDs: ${datasets.eval.list_IDs}
+  base_dir: ${datasets.eval.base_dir}
+  config: ${datasets.eval.config} 

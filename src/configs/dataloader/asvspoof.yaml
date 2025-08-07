@@ -1,0 +1,18 @@
+# ASVspoof dataloader configuration
+
+defaults:
+  - _self_
+
+# Training dataloader
+train:
+  batch_size: 16
+  num_workers: 8
+  pin_memory: true
+  drop_last: true
+
+# Evaluation dataloader
+eval:
+  batch_size: 16
+  num_workers: 8
+  pin_memory: true
+  drop_last: false 

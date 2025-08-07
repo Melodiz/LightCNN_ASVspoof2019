@@ -1,5 +1,5 @@
-from src.model.baseline_model import BaselineModel
+from src.model.lightcnn_original import LightCNNOriginal
 
 __all__ = [
-    "BaselineModel",
+    "LightCNNOriginal",
 ]

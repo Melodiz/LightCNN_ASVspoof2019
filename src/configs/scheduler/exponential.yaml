@@ -1,0 +1,8 @@
+# ExponentialLR scheduler configuration
+
+defaults:
+  - _self_
+
+_target_: torch.optim.lr_scheduler.ExponentialLR
+
+gamma: 0.98 

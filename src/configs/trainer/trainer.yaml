@@ -1,0 +1,8 @@
+# Trainer configuration
+
+defaults:
+  - _self_
+
+_target_: src.trainer.trainer.Trainer
+
+log_step: 200 

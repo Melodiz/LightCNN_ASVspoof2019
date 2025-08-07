@@ -1,0 +1,8 @@
+# CrossEntropyLoss configuration
+
+defaults:
+  - _self_
+
+_target_: torch.nn.CrossEntropyLoss
+
+reduction: mean 

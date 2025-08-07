@@ -39,7 +39,7 @@ def set_random_seed(seed):
     torch.manual_seed(seed)
     torch.backends.cudnn.deterministic = True
     # benchmark=True works faster but reproducibility decreases
-    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.benchmark = True
     np.random.seed(seed)
     random.seed(seed)
     os.environ["PYTHONHASHSEED"] = str(seed)
@@ -80,10 +80,26 @@ def log_git_commit_and_patch(save_dir):
     print("Logging git commit and patch...")
     commit_path = save_dir / "git_commit.txt"
     patch_path = save_dir / "git_diff.patch"
-    with commit_path.open("w") as f:
-        subprocess.call(["git", "rev-parse", "HEAD"], stdout=f)
-    with patch_path.open("w") as f:
-        subprocess.call(["git", "diff", "HEAD"], stdout=f)
+    
+    try:
+        with commit_path.open("w") as f:
+            subprocess.call(["git", "rev-parse", "HEAD"], stdout=f)
+        with patch_path.open("w") as f:
+            subprocess.call(["git", "diff", "HEAD"], stdout=f)
+    except FileNotFoundError:
+        print("Warning: git not found. Skipping git commit and patch logging.")
+        # Create empty files to avoid errors
+        with commit_path.open("w") as f:
+            f.write("git not available\n")
+        with patch_path.open("w") as f:
+            f.write("git not available\n")
+    except subprocess.CalledProcessError:
+        print("Warning: git repository not found or not a git repo. Skipping git logging.")
+        # Create empty files to avoid errors
+        with commit_path.open("w") as f:
+            f.write("not a git repository\n")
+        with patch_path.open("w") as f:
+            f.write("not a git repository\n")
 
 
 def resume_config(save_dir):

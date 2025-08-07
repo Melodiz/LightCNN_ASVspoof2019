@@ -1,0 +1,10 @@
+# LightCNN model configuration
+
+defaults:
+  - _self_
+
+_target_: src.model.lightcnn_original.LightCNNOriginal
+
+input_shape: [1, 863, 600]
+num_classes: 2
+dropout_prob: 0.75 

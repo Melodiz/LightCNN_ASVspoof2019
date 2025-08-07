@@ -1,145 +1,364 @@
-# PyTorch Template for DL projects
+# ASVspoof 2019 LightCNN Implementation
 
-<p align="center">
-  <a href="#about">About</a> •
-  <a href="#tutorials">Tutorials</a> •
-  <a href="#examples">Examples</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#how-to-use">How To Use</a> •
-  <a href="#useful-links">Useful Links</a> •
-  <a href="#credits">Credits</a> •
-  <a href="#license">License</a>
-</p>
+This repository contains a PyTorch implementation of LightCNN for voice anti-spoofing detection on the ASVspoof 2019 Logical Access (LA) dataset. The implementation follows the specifications from the original LightCNN paper and is designed for the HSE Voice Anti-spoofing homework assignment.
 
-<p align="center">
-<a href="https://github.com/Blinorot/pytorch_project_template/generate">
-  <img src="https://img.shields.io/badge/use%20this-template-green?logo=github">
-</a>
-<a href="https://github.com/Blinorot/pytorch_project_template/blob/main/LICENSE">
-   <img src=https://img.shields.io/badge/license-MIT-blue.svg>
-</a>
-<a href="https://github.com/Blinorot/pytorch_project_template/blob/main/CITATION.cff">
-   <img src="https://img.shields.io/badge/cite-this%20repo-purple">
-</a>
-</p>
+## Task Overview
 
-## About
+This project implements a **Countermeasure (CM) system** for voice anti-spoofing detection using the **LightCNN (LCNN) architecture** on the Logical Access partition of the ASVspoof 2019 Dataset. The goal is to distinguish between bonafide (genuine) and spoofed audio samples.
 
-This repository contains a template for [PyTorch](https://pytorch.org/)-based Deep Learning projects.
+### Key Requirements
+- **LightCNN Architecture**: Implemented according to the original paper specifications
+- **ASVspoof 2019 LA Dataset**: Logical Access partition
+- **STFT Frontend**: Short-Time Fourier Transform for feature extraction
+- **Cross-Entropy Loss**: Standard classification loss function
+- **Dropout Regularization**: As specified in the training recipe
+- **EER Evaluation**: Equal Error Rate as the primary metric
 
-The template utilizes different python-dev techniques to improve code readability. Configuration methods enhance reproducibility and experiments control.
+## Architecture
 
-The repository is released as a part of the [HSE DLA course](https://github.com/markovka17/dla), however, can easily be adopted for any DL-task.
+### LightCNN Model
+The implementation follows the LightCNN architecture from the original paper with the following key components:
 
-This template is the official recommended template for the [EPFL CS-433 ML Course](https://www.epfl.ch/labs/mlo/machine-learning-cs-433/).
+- **MFM Layers**: Max-Feature-Map operations for feature selection
+- **Batch Normalization**: For training stability
+- **Dropout**: 0.75 dropout probability for regularization
+- **STFT Frontend**: Short-Time Fourier Transform with optimized parameters
 
-> 📖 **If you use this template in your work, please cite this repository or include a reference. Attribution supports the project and encourages continued development.**
-
-## Tutorials
-
-This template utilizes experiment tracking techniques, such as [WandB](https://docs.wandb.ai/) and [Comet ML](https://www.comet.com/docs/v2/), and [Hydra](https://hydra.cc/docs/intro/) for the configuration. It also automatically reformats code and conducts several checks via [pre-commit](https://pre-commit.com/). If you are not familiar with these tools, we advise you to look at the tutorials below:
-
-- [Python Dev Tips](https://github.com/ebezzam/python-dev-tips): information about [Git](https://git-scm.com/doc), [pre-commit](https://pre-commit.com/), [Hydra](https://hydra.cc/docs/intro/), and other stuff for better Python code development. The YouTube recording of the workshop is available [here](https://youtu.be/okxaTuBdDuY).
-
-- [Seminar on R&D Coding 2025](https://youtu.be/PE1zaW5it_A): Seminar from the [LauzHack Deep Learning Bootcamp](https://github.com/LauzHack/deep-learning-bootcamp/) with discussion on logging, project-based coding, configuration, and reproducibility. The materials can be found [here](https://github.com/LauzHack/deep-learning-bootcamp/tree/summer25/day05).
-
-- [Seminar on R&D Coding 2024](https://youtu.be/sEA-Js5ZHxU): Seminar from the [LauzHack Deep Learning Bootcamp](https://github.com/LauzHack/deep-learning-bootcamp/) with template discussion and reasoning. It also explains how to work with [WandB](https://docs.wandb.ai/). The seminar materials can be found [here](https://github.com/LauzHack/deep-learning-bootcamp/blob/main/day03/Seminar_WandB_and_Coding.ipynb).
-
-- [HSE DLA Course Introduction Week](https://github.com/markovka17/dla/tree/2024/week01): combines the two seminars above into one with some updates, including an extra example for [Comet ML](https://www.comet.com/docs/v2/).
-
-- [PyTorch Basics](https://github.com/markovka17/dla/tree/2024/week01/intro_to_pytorch): several notebooks with [PyTorch](https://pytorch.org/docs/stable/index.html) basics and corresponding seminar recordings from the [LauzHack Deep Learning Bootcamp](https://github.com/LauzHack/deep-learning-bootcamp/).
-
-To start working with a template, just click on the `use this template` button.
-
-<a href="https://github.com/Blinorot/pytorch_project_template/generate">
-  <img src="https://img.shields.io/badge/use%20this-template-green?logo=github">
-</a>
-
-You can choose any of the branches as a starting point. [Set your choice as the default branch](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/changing-the-default-branch) in the repository settings. You can also [delete unnecessary branches](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository).
-
-## Examples
-
-> [!IMPORTANT]
-> The main branch leaves some of the code parts empty or fills them with dummy examples, showing just the base structure. The final users can add code required for their own tasks.
-
-You can find examples of this template completed for different tasks in other branches:
-
-- [Image classification](https://github.com/Blinorot/pytorch_project_template/tree/example/image-classification): simple classification problem on [MNIST](https://yann.lecun.com/exdb/mnist/) and [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) datasets.
-
-- [ASR](https://github.com/Blinorot/pytorch_project_template/tree/example/asr): template for the automatic speech recognition (ASR) task. Some of the parts (for example, `collate_fn` and beam search for `text_encoder`) are missing for studying purposes of [HSE DLA course](https://github.com/markovka17/dla).
-
-## Installation
-
-Installation may depend on your task. The general steps are the following:
-
-0. (Optional) Create and activate new environment using [`conda`](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html) or `venv` ([`+pyenv`](https://github.com/pyenv/pyenv)).
-
-   a. `conda` version:
-
-   ```bash
-   # create env
-   conda create -n project_env python=PYTHON_VERSION
-
-   # activate env
-   conda activate project_env
-   ```
-
-   b. `venv` (`+pyenv`) version:
-
-   ```bash
-   # create env
-   ~/.pyenv/versions/PYTHON_VERSION/bin/python3 -m venv project_env
-
-   # alternatively, using default python version
-   python3 -m venv project_env
-
-   # activate env
-   source project_env/bin/activate
-   ```
-
-1. Install all required packages
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. Install `pre-commit`:
-   ```bash
-   pre-commit install
-   ```
-
-## How To Use
-
-To train a model, run the following command:
-
-```bash
-python3 train.py -cn=CONFIG_NAME HYDRA_CONFIG_ARGUMENTS
+### Model Specifications
+```yaml
+model:
+  input_shape: [1, 863, 600]  # (channels, height, width)
+  num_classes: 2               # bonafide vs spoof
+  dropout_prob: 0.75          # dropout for regularization
 ```
 
-Where `CONFIG_NAME` is a config from `src/configs` and `HYDRA_CONFIG_ARGUMENTS` are optional arguments.
+## Quick Start
 
-To run inference (evaluate the model or save predictions):
-
+### 1. Environment Setup
 ```bash
-python3 inference.py HYDRA_CONFIG_ARGUMENTS
+# Clone the repository
+git clone <repository-url>
+cd template
+
+# Create virtual environment
+python -m venv env
+source env/bin/activate  # On Windows: env\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-## Useful Links:
+### 2. Comet.ml Setup
+This project uses Comet.ml for experiment tracking and logging. Follow these steps to set up Comet.ml:
 
-You may find the following links useful:
+#### Step 1: Create Comet.ml Account
+1. Go to [Comet.ml](https://www.comet.com) and create a free account
+2. Verify your email address
 
-- [Report branch](https://github.com/Blinorot/pytorch_project_template/tree/report): Guidelines for writing a scientific report/paper (with an emphasis on DL projects).
+#### Step 2: Get Your API Key
+1. Log in to your Comet.ml account
+2. Go to your profile settings (click on your avatar in the top right)
+3. Navigate to "API Keys" section
+4. Copy your API key
 
-- [CLAIRE Template](https://github.com/CLAIRE-Labo/python-ml-research-template): additional template by [EPFL CLAIRE Laboratory](https://www.epfl.ch/labs/claire/) that can be combined with ours to enhance experiments reproducibility via [Docker](https://www.docker.com/).
+#### Step 3: Set Environment Variables
+Set your Comet.ml API key as an environment variable:
 
-- [Mamba](https://github.com/mamba-org/mamba) and [Poetry](https://python-poetry.org/): alternatives to [Conda](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html) and [pip](https://pip.pypa.io/en/stable/installation/) package managers given above.
+**On macOS/Linux:**
+```bash
+export COMET_API_KEY="your_api_key_here"
+export COMET_WORKSPACE="your_workspace_name"
+export COMET_PROJECT_NAME="asvspoof-baseline"
+```
 
-- [Awesome README](https://github.com/matiassingers/awesome-readme): a list of awesome README files for inspiration. Check the basics [here](https://github.com/PurpleBooth/a-good-readme-template).
+**On Windows (Command Prompt):**
+```cmd
+set COMET_API_KEY=your_api_key_here
+set COMET_WORKSPACE=your_workspace_name
+set COMET_PROJECT_NAME=asvspoof-baseline
+```
 
-## Credits
+**On Windows (PowerShell):**
+```powershell
+$env:COMET_API_KEY="your_api_key_here"
+$env:COMET_WORKSPACE="your_workspace_name"
+$env:COMET_PROJECT_NAME="asvspoof-baseline"
+```
 
-This repository is based on a heavily modified fork of [pytorch-template](https://github.com/victoresque/pytorch-template) and [asr_project_template](https://github.com/WrathOfGrapes/asr_project_template) repositories.
+**Alternative: Create a .env file**
+Create a `.env` file in your project root:
+```bash
+# .env file
+COMET_API_KEY=your_api_key_here
+COMET_WORKSPACE=your_workspace_name
+COMET_PROJECT_NAME=asvspoof-baseline
+```
 
-## License
+Then load it in your shell:
+```bash
+source .env
+```
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+#### Step 4: Verify Setup
+Test your Comet.ml setup by running a quick training session:
+```bash
+python train.py trainer.n_epochs=1  # Quick test with 1 epoch
+```
+
+You should see Comet.ml initialization messages in the console output.
+
+### 3. Dataset Setup
+This project uses the **ASVspoof 2019 Logical Access (LA) dataset**. The ASVspoof 2019 dataset was created for the third Automatic Speaker Verification Spoofing and Countermeasures Challenge. This repository focuses on the Logical Access (LA) partition, which, for the first time in the challenge's history, includes all three major attack types: text-to-speech (TTS), voice conversion (VC), and replay attacks. The data is derived from the VCTK corpus and is split into training, development, and evaluation sets with no speaker overlap between them. A key feature of the evaluation set is the inclusion of "unknown attacks"—spoofing techniques not present in the training or development data—to rigorously test a model's ability to generalize. 
+
+Download the ASVspoof 2019 LA dataset and organize it as follows:
+
+**Preferred method (direct download):**
+```bash
+curl -o ./LA.zip -# https://datashare.ed.ac.uk/bitstream/handle/10283/3336/LA.zip\?sequence\=3\&isAllowed\=y
+unzip LA.zip
+```
+
+**Alternative sources:**
+- **Original Source:** [ASVspoof 2019 dataset page](https://datashare.ed.ac.uk/handle/10283/3336)
+- **Kaggle Mirror:** [ASVpoof 2019 Dataset on Kaggle](https://www.kaggle.com/datasets/awsaf49/asvpoof-2019-dataset/data)
+
+**Expected directory structure:**
+```
+LA/
+├── ASVspoof2019_LA_train/
+│   ├── flac/
+│   └── LICENSE.txt
+├── ASVspoof2019_LA_dev/
+│   ├── flac/
+│   └── LICENSE.txt
+├── ASVspoof2019_LA_eval/
+│   ├── flac/
+│   └── LICENSE.txt
+└── ASVspoof2019_LA_cm_protocols/
+    ├── ASVspoof2019.LA.cm.train.trn.txt
+    ├── ASVspoof2019.LA.cm.dev.trl.txt
+    └── ASVspoof2019.LA.cm.eval.trl.txt
+```
+
+### 4. Training
+```bash
+# Basic training with default settings
+python train.py
+
+# Custom training parameters
+python train.py trainer.n_epochs=50 optimizer.lr=0.001
+
+# CPU training
+python train.py trainer.device=cpu
+```
+
+### 5. Evaluation
+```bash
+# Evaluate trained model
+python evaluate.py
+```
+
+### 6. Download Pre-trained Checkpoint
+The trained model checkpoint (122MB) is not included in this repository to keep it lightweight. You can download it from Comet.ml:
+
+#### Method 1: Download from Comet.ml Web Interface
+1. Go to [Comet.ml Experiment](https://www.comet.com/ivan-novosad/asvspoof-baseline/view/new/panels)
+2. Navigate to the "Assets" tab
+3. Find the `best_model.pth` file in the `checkpoints/` folder
+4. Click the download button to save the file
+5. Place the downloaded file in the `saved/` directory:
+   ```bash
+   mkdir -p saved
+   mv best_model.pth saved/
+   ```
+
+#### Method 2: Download via Comet.ml API
+```bash
+# Install comet-ml if not already installed
+pip install comet-ml
+
+# Download the checkpoint using Python
+python -c "
+import comet_ml
+api = comet_ml.API()
+experiment = api.get_experiment('ivan-novosad', 'asvspoof-baseline', '4rhkga45el9k6gs00b0qs36qvscu475t')
+experiment.download_asset('checkpoints/best_model.pth', 'saved/best_model.pth')
+"
+```
+
+#### Method 3: Direct Download Link
+If available, you can download directly from the experiment URL:
+1. Visit the experiment page
+2. Go to Assets → checkpoints
+3. Right-click on `best_model.pth` and "Save link as..."
+4. Save to `saved/best_model.pth`
+
+**Note**: The checkpoint file is ~122MB. Make sure you have sufficient disk space and a stable internet connection.
+
+## Project Structure
+
+```
+template/
+├── train.py                    # Modular training script
+├── evaluate.py                 # Modular evaluation script
+├── requirements.txt            # Dependencies
+├── README.md                  # This file
+├── src/
+│   ├── configs/
+│   │   ├── asvspoof_baseline.yaml  # Main configuration
+│   │   ├── model/lightcnn.yaml     # Model configuration
+│   │   ├── optimizer/adam.yaml      # Optimizer configuration
+│   │   ├── scheduler/exponential.yaml # Scheduler configuration
+│   │   └── writer/cometml.yaml      # Writer configuration
+│   ├── datasets/
+│   │   ├── asvspoof_dataset.py     # Dataset implementations
+│   │   ├── data_utils.py           # Data utilities
+│   │   ├── dataloader_utils.py     # Training data loading
+│   │   └── eval_utils.py           # Evaluation data loading
+│   ├── model/
+│   │   └── lightcnn_original.py    # LightCNN model implementation
+│   ├── trainer/
+│   │   ├── asvspoof_trainer.py     # Main trainer class
+│   │   └── evaluator.py            # Evaluation logic
+│   ├── metrics/
+│   │   └── eer_utils.py            # EER calculation functions
+│   ├── utils/
+│   │   ├── init_utils.py           # Initialization utilities
+│   │   ├── model_utils.py          # Model loading utilities
+│   │   └── results_utils.py        # Results management
+│   └── logger/
+│       └── cometml.py              # CometML writer
+└── LA/                          # Dataset directory (not in repo)
+```
+
+## Configuration
+
+### Main Configuration (`src/configs/asvspoof_baseline.yaml`)
+```yaml
+# Training parameters
+epochs: 16
+batch_size: 16
+learning_rate: 0.0005
+
+# Model parameters
+model:
+  input_shape: [1, 863, 600]
+  num_classes: 2
+  dropout_prob: 0.75
+
+# Optimizer
+optimizer:
+  lr: 0.0005
+
+# Scheduler
+scheduler:
+  gamma: 0.98
+```
+
+### Key Hyperparameters
+- **Learning Rate**: 0.0005 (Adam optimizer)
+- **Batch Size**: 16
+- **Epochs**: 16 (configurable)
+- **Dropout**: 0.75
+- **Scheduler**: ExponentialLR with gamma=0.98
+
+## Implementation Details
+
+### Data Processing
+- **STFT Parameters**: n_fft=1724, hop_length=130, win_length=1724
+- **Feature Shape**: [1, 863, 600] (channels, height, width)
+- **Augmentation**: SpecAugment with frequency and time masking
+- **Class Balancing**: WeightedRandomSampler for balanced training
+
+### Training Features
+- **Multi-GPU Support**: Current training/evaluation pipeline is adapted for multi-GPU computations (parallel)
+- **Class Balancing**: WeightedRandomSampler for balanced training
+- **SpecAugment**: Data augmentation for spectrograms
+  - Applying uniform noise to 50% of objects
+  - Frequency Masking
+  - Time Masking
+- **Exponential LR Scheduler**: Learning rate scheduling
+- **Comet.ml Integration**: Experiment tracking and logging
+
+## Training and Evaluation
+
+### Training Process
+1. **Data Loading**: ASVspoof 2019 LA dataset with class balancing
+2. **Feature Extraction**: STFT with optimized parameters
+3. **Model Training**: LightCNN with Cross-Entropy loss
+4. **Evaluation**: EER calculation on evaluation set
+5. **Logging**: Comet.ml integration for experiment tracking
+
+### Evaluation Process
+1. **Model Loading**: Load trained checkpoint
+2. **Score Generation**: Generate scores for evaluation set
+3. **EER Calculation**: Compute Equal Error Rate
+4. **Results Saving**: Save predictions to CSV
+
+## Results and Logging
+
+### Comet.ml Integration
+The project uses Comet.ml for experiment tracking:
+- **Real-time Metrics**: Live training and evaluation metrics
+- **Experiment Management**: Organized experiment tracking
+- **Checkpoint Logging**: Automatic model checkpoint logging
+- **Hyperparameter Tracking**: Configuration parameter logging
+
+**Live Training Logs**: [View on Comet.ml](https://www.comet.com/ivan-novosad/asvspoof-baseline/view/new/panels)
+
+### Training Results
+The model achieved excellent performance with **EER of 2.13%** after only 4 epochs of training. This result is close to the authors' reported EER value of 1.86% and significantly exceeds the HSE homework goal of 5.3% EER. The training was stopped early due to satisfactory performance.
+
+#### Training Dashboards
+Below are the training metrics and loss curves from the 4-epoch training run:
+
+
+**Training Loss vs Steps:**
+
+<img src="assets/batch_loss_train%20VS%20step.jpeg" alt="Training Loss" width="830">
+
+**Training Metrics (Epoch Loss and EER):**
+
+<table>
+<tr>
+<td><img src="assets/epoch_loss_train%20VS%20step.jpeg" alt="Epoch Loss" width="400"></td>
+<td><img src="assets/epoch_eer_eval%20VS%20step.jpeg" alt="Evaluation EER" width="400"></td>
+</tr>
+</table>
+
+
+### Core Dependencies
+```txt
+torch==2.8.0
+torchaudio==2.8.0
+torchvision==0.23.0
+soundfile==0.13.1
+hydra-core==1.3.2
+omegaconf==2.3.0
+comet_ml==3.50.0
+numpy==1.26.4
+pandas==2.3.1
+tqdm==4.67.1
+```
+
+## References and Citations
+
+### Academic Papers
+1. **ASVspoof 2019**: [Evaluation Plan](https://www.asvspoof.org/asvspoof2019/asvspoof2019_evaluation_plan.pdf)
+2. **LightCNN Paper**: [Speech Technology Center](https://arxiv.org/abs/1904.05576)
+
+### Code and Templates
+3. **PyTorch Project Template**: [GitHub Repository](https://github.com/Blinorot/pytorch_project_template) by Petr Grinberg
+
+### Citation
+If you use this implementation, please cite:
+
+```bibtex
+@software{asvspoof_lightcnn_2024,
+  title={ASVspoof 2019 LightCNN Implementation},
+  author={Novosad, Ivan},
+  year={2025},
+  url={https://github.com/Melodiz/LightCNN_ASVspoof2019},
+  note={Voice anti-spoofing detection using LightCNN on ASVspoof 2019 LA dataset}
+}
+```

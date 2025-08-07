@@ -1,0 +1,86 @@
+# Main configuration for ASVspoof baseline experiment
+# This is the main config file that orchestrates all components
+
+defaults:
+  - model: lightcnn
+  - optimizer: adam
+  - scheduler: exponential
+  - loss: cross_entropy
+  - trainer: trainer
+  - datasets: asvspoof
+  - dataloader: asvspoof
+  - metrics: asvspoof
+  - writer: cometml
+  - _self_
+
+# Experiment name
+name: asvspoof_baseline
+
+# Training parameters
+epochs: 16
+save_period: 1
+monitor: min eval_eer
+early_stop: 10
+log_step: 200
+
+# Trainer configuration
+trainer:
+  log_step: 200
+  save_dir: "saved"
+  resume_from: null
+  override: true
+  device: "auto"
+  seed: 42
+
+# Model parameters
+model:
+  input_shape: [1, 863, 600]
+  num_classes: 2
+  dropout_prob: 0.75
+
+# Optimizer parameters
+optimizer:
+  lr: 0.0005
+
+# Scheduler parameters
+scheduler:
+  gamma: 0.98
+
+# Loss parameters
+loss:
+  reduction: mean
+
+# Dataset parameters
+datasets:
+  train:
+    dataset_path: LA/ASVspoof2019_LA_train
+    protocol_path: LA/ASVspoof2019_LA_cm_protocols/ASVspoof2019.LA.cm.train.trn.txt
+    name: train
+  eval:
+    dataset_path: LA/ASVspoof2019_LA_dev
+    protocol_path: LA/ASVspoof2019_LA_cm_protocols/ASVspoof2019.LA.cm.dev.trl.txt
+    name: eval
+
+# Dataloader parameters
+dataloader:
+  batch_size: 16
+  num_workers: 8
+  pin_memory: true
+
+# Metrics parameters
+metrics:
+  eer:
+    threshold_step: 0.001
+
+# Writer parameters
+writer:
+  project_name: asvspoof_baseline
+  experiment_name: ${name}
+  run_name: "run02"
+  run_id: null
+  id_length: 32
+  log_checkpoints: true
+  log_code: false
+  log_graph: false
+  auto_metric_logging: true
+  auto_param_logging: true 

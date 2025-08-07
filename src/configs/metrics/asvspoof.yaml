@@ -1,0 +1,9 @@
+# ASVspoof metrics configuration
+
+defaults:
+  - _self_
+
+# EER metric
+eer:
+  _target_: src.metrics.eer_metric.EERMetric
+  threshold_step: 0.001 

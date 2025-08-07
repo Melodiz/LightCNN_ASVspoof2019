@@ -1,2 +1,4 @@
-from src.trainer.inferencer import Inferencer
-from src.trainer.trainer import Trainer
+from .asvspoof_trainer import ASVspoofTrainer
+from .evaluator import ASVspoofEvaluator
+
+__all__ = ['ASVspoofTrainer', 'ASVspoofEvaluator']
